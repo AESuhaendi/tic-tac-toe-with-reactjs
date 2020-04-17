@@ -115,9 +115,14 @@ class Game extends React.Component {
           }
         }
       }
-      const desc = move ?
+
+      let desc = move ?
         `Go to move #${move} (${col}, ${row})` :
         'Go to game start';
+
+      if (move === this.state.stepNumber) {
+        desc = <strong>{desc}</strong>;
+      }
 
       return (
         <li key={move}>
