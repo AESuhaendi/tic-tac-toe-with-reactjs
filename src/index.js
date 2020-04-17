@@ -98,13 +98,25 @@ class Game extends React.Component {
   }
 
   render() {
+    const grid = 3;
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
+      let col, row;
+      if (move) {
+        const prev = history[move - 1];
+        for (let x = 0; x < step.squares.length; x++) {
+          if (step.squares[x] !== prev.squares[x]) {
+            const pos = x + 1;
+            row = Math.ceil(pos / grid);
+            col = (pos % grid) ? (pos % grid) : grid;
+          }
+        }
+      }
       const desc = move ?
-        'Go to move #' + move :
+        `Go to move #${move} (${col}, ${row})` :
         'Go to game start';
 
       return (
