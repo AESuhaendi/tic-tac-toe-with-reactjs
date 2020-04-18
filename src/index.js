@@ -137,6 +137,10 @@ class Game extends React.Component {
       linesWon = winner.linesWon;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      const squaresEmpty = current.squares.filter((val) => val === null);
+      if (squaresEmpty.length === 0) {
+        status = 'The Game is Draw';
+      }
     }
 
     return (
