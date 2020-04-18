@@ -33,29 +33,27 @@ function calculateWinner(squares) {
 class Board extends React.Component {
   renderSquare(i) {
     return <Square
+      key={i}
       value={this.props.squares[i]}
       onClick={() => this.props.onClick(i)}
     />;
   }
 
+  renderBoard(grid) {
+    return Array(grid).fill(null).map((val, i) => {
+      const contentBoardRow = [];
+      const pos = i * grid;
+      for (let j = pos; j < pos + grid; j++) {
+        contentBoardRow.push(this.renderSquare(j));
+      }
+      return <div className="board-row" key={i}>{contentBoardRow}</div>;
+    });
+  }
+
   render() {
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.renderBoard(this.props.grid)}
       </div>
     );
   }
@@ -144,6 +142,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
+            grid={grid}
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
           />
