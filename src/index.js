@@ -89,6 +89,17 @@ class Game extends React.Component {
     });
   }
 
+  handleResetGame() {
+    this.setState({
+      history: [{
+        squares: Array(9).fill(null),
+      }],
+      stepNumber: 0,
+      xIsNext: true,
+      isMovesDesc: false,
+    });
+  }
+
   render() {
     const grid = 3;
     const history = this.state.history;
@@ -131,15 +142,17 @@ class Game extends React.Component {
       moves.reverse();
     }
 
-    let status, linesWon;
+    let status, linesWon, isGameOver;
     if (winner) {
       status = 'Winner: ' + winner.player;
       linesWon = winner.linesWon;
+      isGameOver = true;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       const squaresEmpty = current.squares.filter((val) => val === null);
       if (squaresEmpty.length === 0) {
         status = 'The Game is Draw';
+        isGameOver = true;
       }
     }
 
@@ -152,6 +165,11 @@ class Game extends React.Component {
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
           />
+          <div>
+            {isGameOver && 
+              <button onClick={() => this.handleResetGame()}>Reset Game</button>
+            }
+          </div>
         </div>
         <div className="game-info">
           <div>{status}</div>
