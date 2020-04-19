@@ -2,6 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+/**
+ * Square Component
+ * @param {object} props
+ * @param {boolean} props.highlight
+ * @param {string} props.value
+ * @param {function} props.onClick
+ */
 function Square(props) {
   return (
     <button
@@ -13,7 +20,17 @@ function Square(props) {
   );
 }
 
+/**
+ * Board Component
+ * @typedef {object} BoardProps
+ * @prop {number[]} linesWon
+ * @prop {number} grid
+ * @prop {string[]} squares
+ * @prop {function(number)} onClick
+ * @extends React.Component<BoardProps, {}>
+ */
 class Board extends React.Component {
+  /** @param {number} i */
   renderSquare(i) {
     const linesWon = this.props.linesWon;
     const highlight = (linesWon && linesWon.includes(i)) ? true : false;
@@ -26,6 +43,7 @@ class Board extends React.Component {
     />;
   }
 
+  /** @param {number} grid */
   renderBoard(grid) {
     return Array(grid).fill(null).map((val, i) => {
       const contentBoardRow = [];
@@ -46,6 +64,7 @@ class Board extends React.Component {
   }
 }
 
+/** Game Component */
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +78,7 @@ class Game extends React.Component {
     };
   }
 
+  /** @param {number} i */
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -76,6 +96,7 @@ class Game extends React.Component {
     });
   }
 
+  /** @param {number} step */
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -189,6 +210,11 @@ class Game extends React.Component {
 
 ReactDOM.render(<Game />, document.getElementById("root"));
 
+/**
+ * Calculate who is the winner
+ * @param {string[]} squares
+ * @returns {{player: string, linesWon: number[]}} return object if there is the winner, otherwise null
+ */
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
